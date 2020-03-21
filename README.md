@@ -5,6 +5,24 @@ code with the basic skelethon for Artwork and ArtFactory contracts.
 
 Not completed but intended to be always compiling.
 
+## Installation steps
+
+1. Clone this repository
+
+2. In the project root folder, install Open Zeppelin ERC721 and related contracts
+```
+npm install @openzeppelin/contracts
+```
+
+3. Compile and migrate the contracts (local ganache instance running on 127.0.0.1:7545 expected)
+```
+truffle compile
+truffle migrate
+```
+
+4. Run the test
+[ ] Include test from previous project
+
 ## Truffle settings
 
 The project is initialized with truffle suite, and a local instance of ganache is expected 
