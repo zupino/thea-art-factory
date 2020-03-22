@@ -24,8 +24,6 @@ truffle migrate
 
 4. Run the test
 
-[x] Include test from previous project
-
 ```
 truffle test
 ```
