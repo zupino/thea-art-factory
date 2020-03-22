@@ -1,0 +1,7 @@
+# Exclude truffle build artifact
+build/
+
+#Exclude the Open Zeppelin contracts installed with npm
+node_modules/
+package-lock.json
+
