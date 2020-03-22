@@ -1,5 +1,7 @@
 # thea-art-factory
 
+Art selling fund for our daughter. Based on Simon de la Rouvier work TAIAOS (thisartworkisalwaysonsale.com).
+
 More details on `docs` branch, `master` contains for the moment only the bolier-plate 
 code with the basic skelethon for Artwork and ArtFactory contracts.
 
