@@ -20,8 +20,8 @@ contract ArtFactory {
 	
 	constructor(address payable _artist, Artwork _artwork) public {
 		art = _artwork;
-		art.setup();
 		artist = _artist;
+		art.setup();
 	}
 
 	modifier onlyArtist() {
