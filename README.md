@@ -23,7 +23,12 @@ truffle migrate
 ```
 
 4. Run the test
-[ ] Include test from previous project
+
+[x] Include test from previous project
+
+```
+truffle test
+```
 
 ## Truffle settings
 
