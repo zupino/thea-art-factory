@@ -17,7 +17,7 @@ contract("Artwork", accounts => {
 
 	let catchRevert = require("./exceptions.js").catchRevert;
 
-	before( async function() {
+	beforeEach( async function() {
 		ArtworkInstance = await Artwork.new("Thea Art Factory", "THEA", {from: deployer});
 	});
 
@@ -79,5 +79,9 @@ contract("Artwork", accounts => {
         assert.equal(supply.toNumber(), 3, "CreateNewArtwork does not mint new token");
 
     });
+
+	it("Should transfer the artwork when purchased.", async function() {
+		
+	});
 
 });
