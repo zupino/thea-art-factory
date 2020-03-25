@@ -9,7 +9,6 @@ contract ArtFactory {
 
 	// list of patrons
 	mapping (uint256 => address) private _tokenPatrons;
-	
 
 	struct ArtPiece {
 		string name;
@@ -53,6 +52,11 @@ contract ArtFactory {
 
 	function addDeposit() public payable {
 		
+	}
+
+	function buyArtwork(uint256 tokenId) public payable {
+		require(msg.value > artworks[tokenId].price, "Not enough funds to buy and deposit");
+		_tokenPatrons[tokenId] = msg.sender;
 	}
 
 }
