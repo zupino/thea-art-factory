@@ -12,10 +12,10 @@ contract("Artwork", accounts => {
 	let ArtFactoryInstance;
 
 	let deployer 	= accounts[0];
-	let steward		= accounts[1];
-	let artist 		= accounts[2];
+	let steward	= accounts[1];
+	let artist 	= accounts[2];
 	let patron1 	= accounts[3];
-	let patron2		= accounts[4];
+	let patron2	= accounts[4];
 	let patron3 	= accounts[5];
 
 	let catchRevert = require("./exceptions.js").catchRevert;
