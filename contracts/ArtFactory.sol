@@ -47,7 +47,7 @@ contract ArtFactory {
 		*/
 		art.mint(address(this), artId);
 		_tokenPatrons[artId] = patron;
-		
+
 	}
 
 	function addDeposit() public payable {
@@ -57,6 +57,12 @@ contract ArtFactory {
 	function buyArtwork(uint256 tokenId) public payable {
 		require(msg.value > artworks[tokenId].price, "Not enough funds to buy and deposit");
 		_tokenPatrons[tokenId] = msg.sender;
+	}
+
+	// TODO Remove this function, have been introduced
+	// to facilitate testing during the development phase
+	function getPatron(uint256 tokenId) public view returns (address pat) {
+		return _tokenPatrons[tokenId];
 	}
 
 }

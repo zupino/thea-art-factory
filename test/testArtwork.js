@@ -1,5 +1,7 @@
-// TODO Some test are sequence dependent, need to 
-// double check if this is an issue
+// TODO Only Artwork is initialized beforeEach, 
+// ArtFactory need the initialization in some of the
+// test. This makes the test inter-dependent, which 
+// is not ok. 
 
 const Artwork = artifacts.require("Artwork");
 const ArtFactory = artifacts.require("ArtFactory")
@@ -8,12 +10,13 @@ contract("Artwork", accounts => {
 
 	let ArtworkInstance;
 	let ArtFactoryInstance;
-	let deployer = accounts[0];
-	let steward = accounts[1];
-	let artist = accounts[2];
-	let patron1 = accounts[3];
-	let patron2 = accounts[4];
-	let patron3 = accounts[5];
+
+	let deployer 	= accounts[0];
+	let steward		= accounts[1];
+	let artist 		= accounts[2];
+	let patron1 	= accounts[3];
+	let patron2		= accounts[4];
+	let patron3 	= accounts[5];
 
 	let catchRevert = require("./exceptions.js").catchRevert;
 
@@ -67,6 +70,8 @@ contract("Artwork", accounts => {
 	});
 
 	it("Should create a new masterpiece", async function() {
+
+		ArtFactoryInstance = await ArtFactory.new(artist, ArtworkInstance.address, {from: deployer});
         let supply = await ArtworkInstance.totalSupply();
         assert.equal( supply.toNumber(), 0, "Token supply not empty after factory creation" );
 
@@ -81,7 +86,22 @@ contract("Artwork", accounts => {
     });
 
 	it("Should transfer the artwork when purchased.", async function() {
+		ArtFactoryInstance = await ArtFactory.new(artist, ArtworkInstance.address, {from: deployer});
+		ArtFactoryInstance.createNewArtwork(patron1, "Girotondo", 50000, {from: artist});
+		let tId = 0;
+		let pat = await ArtFactoryInstance.getPatron(tId);
 		
+		assert.equal(patron1, pat, "Patron value is not the one used at creation.");
+		ArtFactoryInstance.buyArtwork(tId, {from:patron2, value: 55000});
+		pat = await ArtFactoryInstance.getPatron(tId);
+		assert.equal(patron2,pat,"Patron not changed after buyArtwork()");
 	});
-
 });
+
+
+
+
+
+
+
+
