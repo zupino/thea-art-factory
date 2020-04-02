@@ -13,6 +13,11 @@ contract ArtFactory {
 	struct ArtPiece {
 		string 	name;
 		uint256 price;
+
+		uint256 totalCollected;
+		uint256 currentCollected;
+		uint256 timeLastCollected;
+		uint256 timeAcquired;
 	}
 
 	ArtPiece[] public artworks;
