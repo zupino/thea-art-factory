@@ -4,15 +4,25 @@ import "./Artwork.sol";
 
 contract ArtFactory {
 
+	using SafeMath for uint;
+
 	Artwork public art;
 	address payable public artist;
 
 	// list of patrons
 	mapping (uint256 => address) private _tokenPatrons;
 
+	enum StewardState { Foreclosed, Owned }
+
 	struct ArtPiece {
+		uint256	id;
 		string 	name;
 		uint256 price;
+
+		StewardState state;
+
+		uint256 collection;
+		uint256 deposit;
 
 		uint256 totalCollected;
 		uint256 currentCollected;
@@ -21,6 +31,8 @@ contract ArtFactory {
 	}
 
 	ArtPiece[] public artworks;
+	uint256 artistFund;
+	event LogCollection(uint256 indexed collected);
 	
 	constructor(address payable _artist, Artwork _artwork) public {
 		art = _artwork;
@@ -40,7 +52,7 @@ contract ArtFactory {
 		require(patron != address(0x0));
 
 		uint256 artId = artworks.length;
-		artworks.push(ArtPiece(name, price));
+		artworks.push(ArtPiece(artId, name, price, StewardState.Owned, 0,0,0,0,0,0));
 		// TODO is it better `steward` or `this.address` here?
 		// just interested.
 		// --> steward is not visible from here, because it is 
@@ -69,5 +81,47 @@ contract ArtFactory {
 	function getPatron(uint256 tokenId) public view returns (address pat) {
 		return _tokenPatrons[tokenId];
 	}
+
+
+
+
+
+
+	function patronageOwed(uint256 tid) public returns (uint256) {}
+	function _foreclose(uint256 tid) public {}
+		
+    /* actions */
+    function _collectPatronage(uint256 tid) public {
+        // determine patronage to pay
+        if (artworks[tid].state == StewardState.Owned) {
+            uint256 collection = patronageOwed(tid);
+            
+            // should foreclose and stake stewardship
+            if (collection >= artworks[tid].deposit) {
+                // up to when was it actually paid for?
+                artworks[tid].timeLastCollected = 
+				artworks[tid].timeLastCollected.add(3);
+/*
+					mul( 
+						sub(now, artworks[tid].timeLastCollected), 
+						div(artworks[tid].deposit, collection) 
+					)
+				);
+*/
+                collection = artworks[tid].deposit; // take what's left.
+
+                _foreclose(tid);
+            } else  {
+                // just a normal collection
+                artworks[tid].timeLastCollected = now;
+                artworks[tid].currentCollected = artworks[tid].currentCollected.add(collection);
+            }
+            
+            artworks[tid].deposit = artworks[tid].deposit.sub(collection);
+            artworks[tid].totalCollected = artworks[tid].totalCollected.add(collection);
+            artistFund.add(collection);
+            emit LogCollection(collection);
+        }
+    }
 
 }
