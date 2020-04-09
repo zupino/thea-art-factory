@@ -9,6 +9,10 @@ contract ArtFactory {
 	Artwork public art;
 	address payable public artist;
 
+	// Patronage yearly percentage
+	uint256 patronageNumerator = 50000000000;
+	uint256 patronageDenominator = 1000000000000;
+
 	// list of patrons
 	mapping (uint256 => address) private _tokenPatrons;
 
@@ -82,7 +86,16 @@ contract ArtFactory {
 		return _tokenPatrons[tokenId];
 	}
 
-	function patronageOwed(uint256 tid) public returns (uint256) {}
+	function patronageOwed(uint256 tid) public view returns (uint256) {
+		return artworks[tid].price
+			.mul(
+				now.sub(artworks[tid].timeLastCollected)
+			)
+				.mul(patronageNumerator)
+				.div(patronageDenominator)
+				.div(365 days);	
+	}
+
 	function _foreclose(uint256 tid) public {}
 		
     /* actions */
