@@ -82,11 +82,6 @@ contract ArtFactory {
 		return _tokenPatrons[tokenId];
 	}
 
-
-
-
-
-
 	function patronageOwed(uint256 tid) public returns (uint256) {}
 	function _foreclose(uint256 tid) public {}
 		
@@ -100,15 +95,13 @@ contract ArtFactory {
             if (collection >= artworks[tid].deposit) {
                 // up to when was it actually paid for?
                 artworks[tid].timeLastCollected = 
-				artworks[tid].timeLastCollected.add(3);
-/*
-					mul( 
-						sub(now, artworks[tid].timeLastCollected), 
-						div(artworks[tid].deposit, collection) 
-					)
-				);
-*/
-                collection = artworks[tid].deposit; // take what's left.
+				artworks[tid].timeLastCollected.add(((
+					now.sub(artworks[tid].timeLastCollected)
+					.mul(artworks[tid].deposit)
+					.div(collection)
+				)));
+                
+				collection = artworks[tid].deposit; // take what's left.
 
                 _foreclose(tid);
             } else  {
